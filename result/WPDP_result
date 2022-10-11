@@ -1,0 +1,6 @@
+ant-1.5_ant-1.6: {'DICT_SIZE': 1084, 'L2_WEIGHT': 0.005, 'max_token': 500, 'batch_size': 8, 'N_EPOCH': 50, 'LEARNING_RATE': 0.0001, 'drop_rate': 0, 'num_head': 1, 'EMBED_DIM': 40, 'lambda': 0.5, 'depth': 1}
+ Pretraining-p:0.663, Pretraining-r:0.663, Pretraining-f:0.663 
+p:0.660, r:0.660, f:0.697
+ant-1.5_ant-1.6: {'DICT_SIZE': 1084, 'L2_WEIGHT': 0.005, 'max_token': 500, 'batch_size': 8, 'N_EPOCH': 50, 'LEARNING_RATE': 0.0001, 'drop_rate': 0, 'num_head': 2, 'EMBED_DIM': 40, 'lambda': 0.5, 'depth': 1}
+ Pretraining-p:0.649, Pretraining-r:0.663, Pretraining-f:0.656 
+p:0.677, r:0.677, f:0.702
