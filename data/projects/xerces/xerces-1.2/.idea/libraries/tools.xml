@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="tools">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/xerces2-j-Xerces-J_1_2_0/tools/ant.jar!/" />
+      <root url="jar://$PROJECT_DIR$/xerces2-j-Xerces-J_1_2_0/tools/xalan.jar!/" />
+      <root url="jar://$PROJECT_DIR$/xerces2-j-Xerces-J_1_2_0/tools/xerces.jar!/" />
+      <root url="jar://$PROJECT_DIR$/xerces2-j-Xerces-J_1_2_0/tools/style-apachexml.jar!/" />
+      <root url="jar://$PROJECT_DIR$/xerces2-j-Xerces-J_1_2_0/tools/stylebook-1.0-b2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

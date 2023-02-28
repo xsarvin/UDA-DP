@@ -1,0 +1,1183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+  
+  http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.apache.camel</groupId>
+  <artifactId>camel-parent</artifactId>
+  <version>1.2.0</version>
+  <packaging>pom</packaging>
+  <name>Camel</name>
+  <description>Camel Parent POM</description>
+
+  <prerequisites>
+    <maven>2.0.6</maven>
+  </prerequisites>
+
+  <properties>
+    <camel-version>1.2.0</camel-version>
+    <compiler.fork>false</compiler.fork>
+    <cxf-version>2.0.2-incubator</cxf-version>
+    <spring-version>2.0.6</spring-version>
+    <jetty-version>6.1.5</jetty-version>
+    <m1-repo-url>scpexe://minotaur.apache.org/www/people.apache.org/repo/m1-snapshot-repository</m1-repo-url>
+    <openjpa-version>0.9.6-incubating</openjpa-version>
+    <release-repo-url>scpexe://people.apache.org/www/people.apache.org/repo/m2-ibiblio-rsync-repository
+    </release-repo-url>
+    <site-repo-url>scpexe://people.apache.org/www/activemq.apache.org/camel/maven/</site-repo-url>
+    <slf4j-version>1.3.0</slf4j-version>
+    <snapshot-repo-url>scp://people.apache.org/www/people.apache.org/repo/m2-snapshot-repository</snapshot-repo-url>
+    <commons-io-version>1.3.1</commons-io-version>
+    <felix-version>1.0.0</felix-version>
+    <!-- OSGi bundles properties -->
+    <camel.osgi.import.pkg>*</camel.osgi.import.pkg>
+    <camel.osgi.private.pkg>!*</camel.osgi.private.pkg>
+    <camel.osgi.export>${camel.osgi.export.pkg}*;version=${camel.osgi.export.version}</camel.osgi.export>
+    <camel.osgi.export.version>${project.version}</camel.osgi.export.version>
+    <camel.osgi.import>${camel.osgi.import.pkg}</camel.osgi.import>
+    <camel.osgi.symbolic.name>${groupId}.${artifactId}</camel.osgi.symbolic.name>
+  </properties>
+
+  <url>http://apache.apache.org/camel/</url>
+
+  <organization>
+    <name>Apache Software Foundation</name>
+    <url>http://www.apache.org/</url>
+  </organization>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <mailingLists>
+    <mailingList>
+      <name>Development List</name>
+      <subscribe>camel-dev@activemq.apache.org</subscribe>
+      <unsubscribe>camel-dev@activemq.apache.org</unsubscribe>
+      <post>camel-dev@activemq.apache.org</post>
+    </mailingList>
+    <mailingList>
+      <name>User List</name>
+      <subscribe>camel-user@activemq.apache.org</subscribe>
+      <unsubscribe>camel-user@activemq.apache.org</unsubscribe>
+      <post>camel-user@activemq.apache.org</post>
+    </mailingList>
+    <mailingList>
+      <name>Commits List</name>
+      <subscribe>camel-commits@activemq.apache.org</subscribe>
+      <unsubscribe>camel-commits@activemq.apache.org</unsubscribe>
+      <post>camel-commits@activemq.apache.org</post>
+    </mailingList>
+  </mailingLists>
+
+  <repositories>
+    <repository>
+      <id>apache.incubating.releases</id>
+      <name>Apache Incubating Release Distribution Repository</name>
+      <url>http://people.apache.org/repo/m2-incubating-repository</url>
+    </repository>
+    <repository>
+      <id>apache.snapshots</id>
+      <name>Apache Development Snapshot Repository</name>
+      <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+    <repository>
+      <id>open.iona.m2-all</id>
+      <name>IONA Open Source Community Dependency Repository</name>
+      <url>http://repo.open.iona.com/maven2-all</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>apache.incubating.releases</id>
+      <name>Apache Incubating Release Distribution Repository</name>
+      <url>http://people.apache.org/repo/m2-incubating-repository</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>apache.snapshots</id>
+      <name>Apache Development Snapshot Repository</name>
+      <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </pluginRepository>
+    <pluginRepository>
+      <id>maven2-repository.dev.java.net</id>
+      <name>Java.net Repository for Maven</name>
+      <url>http://download.java.net/maven/2</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>codehaus.repo</id>
+      <name>Codehaus Repository</name>
+      <url>http://repository.codehaus.org/</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>open.iona.m2-all</id>
+      <name>IONA Open Source Community Dependency Repository</name>
+      <url>http://repo.open.iona.com/maven2-all</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <distributionManagement>
+    <repository>
+      <id>apache.releases</id>
+      <name>Apache Release Distribution Repository</name>
+      <url>${release-repo-url}</url>
+    </repository>
+    <snapshotRepository>
+      <id>apache.snapshots</id>
+      <name>Apache Development Snapshot Repository</name>
+      <url>${snapshot-repo-url}</url>
+    </snapshotRepository>
+    <site>
+      <id>apache.website</id>
+      <url>${site-repo-url}</url>
+    </site>
+  </distributionManagement>
+
+  <modules>
+    <module>apache-camel</module>
+    <module>camel-core</module>
+    <module>components</module>
+    <module>examples</module>
+    <module>tooling</module>
+    <module>tests</module>
+  </modules>
+
+  <scm>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/activemq/camel/trunk</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/activemq/camel/trunk</developerConnection>
+    <url>http://svn.apache.org/viewvc/activemq/camel/trunk/</url>
+  </scm>
+
+  <dependencyManagement>
+    <dependencies>
+
+      <!-- Camel jars -->
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-atom</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-bam</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-core</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-cxf</artifactId>
+        <version>${camel-version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-ftp</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-http</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-ibatis</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-irc</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-jaxb</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-jdbc</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-jetty</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-jing</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-jhc</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-jms</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-jpa</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-josql</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-juel</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-mail</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-mina</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-msv</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-ognl</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-quartz</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-rmi</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-saxon</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-script</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-spring</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-stringtemplate</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-velocity</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-xmlbeans</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-xmpp</artifactId>
+        <version>${camel-version}</version>
+      </dependency>
+
+      <!-- testing jars -->
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-core</artifactId>
+        <type>test-jar</type>
+        <version>${camel-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-spring</artifactId>
+        <type>test-jar</type>
+        <version>${camel-version}</version>
+      </dependency>
+
+
+      <!-- Required dependencies -->
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging-api</artifactId>
+        <version>1.0.4</version>
+      </dependency>
+
+      <!-- optional dependencies  -->
+      <dependency>
+        <groupId>javax.xml</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>2.0</version>
+        <exclusions>
+          <exclusion>
+            <groupId>javax.xml</groupId>
+            <artifactId>jsr173</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>stax</groupId>
+        <artifactId>stax-api</artifactId>
+        <version>1.0.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-impl</artifactId>
+        <version>2.0.3</version>
+        <exclusions>
+          <!--
+                    <exclusion>
+                      <groupId>javax.xml</groupId>
+                      <artifactId>jsr173</artifactId>
+                    </exclusion>
+          -->
+          <exclusion>
+            <groupId>javax.jws</groupId>
+            <artifactId>jsr181-api</artifactId>
+          </exclusion>
+          <!--
+                    <exclusion>
+                      <groupId>javax.activation</groupId>
+                      <artifactId>activation</artifactId>
+                    </exclusion>
+          -->
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-xjc</artifactId>
+        <version>2.0.3</version>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>1.0.4</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>3.2</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-pool</groupId>
+        <artifactId>commons-pool</artifactId>
+        <version>1.2</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-dbcp</groupId>
+        <artifactId>commons-dbcp</artifactId>
+        <version>1.2.1</version>
+      </dependency>
+      <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>1.2.12</version>
+      </dependency>
+
+      <!-- optional dependencies for JMS -->
+      <dependency>
+        <groupId>org.apache.activemq</groupId>
+        <artifactId>activemq-core</artifactId>
+        <version>4.1.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.activemq</groupId>
+        <artifactId>apache-activemq</artifactId>
+        <version>4.1.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.xbean</groupId>
+        <artifactId>xbean-spring</artifactId>
+        <version>3.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.geronimo.specs</groupId>
+        <artifactId>geronimo-jms_1.1_spec</artifactId>
+        <version>1.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.geronimo.specs</groupId>
+        <artifactId>geronimo-jta_1.0.1B_spec</artifactId>
+        <version>1.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.geronimo.specs</groupId>
+        <artifactId>geronimo-j2ee-management_1.0_spec</artifactId>
+        <version>1.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.geronimo.specs</groupId>
+        <artifactId>geronimo-j2ee-jacc_1.0_spec</artifactId>
+        <version>1.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.geronimo.specs</groupId>
+        <artifactId>geronimo-j2ee-connector_1.5_spec</artifactId>
+        <version>1.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.geronimo.specs</groupId>
+        <artifactId>geronimo-jsp_2.0_spec</artifactId>
+        <version>1.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.geronimo.specs</groupId>
+        <artifactId>geronimo-servlet_2.4_spec</artifactId>
+        <version>1.0</version>
+      </dependency>
+
+
+      <!-- Optional Spring Support -->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring</artifactId>
+        <version>${spring-version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>javax.resource</groupId>
+            <artifactId>connector</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-support</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-hibernate</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-remoting</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <!-- optional mina dependencies -->
+      <dependency>
+        <groupId>org.apache.mina</groupId>
+        <artifactId>mina-java5</artifactId>
+        <version>1.0.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>${slf4j-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>${slf4j-version}</version>
+      </dependency>
+
+      <!-- optional jetty support -->
+      <dependency>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty</artifactId>
+        <version>${jetty-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty-client</artifactId>
+        <version>${jetty-version}</version>
+      </dependency>
+
+
+      <!-- optional jakarta http core support -->
+      <dependency>
+	    <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpcore</artifactId>
+        <version>4.0-alpha5</version>
+	  </dependency>
+      <dependency>
+	    <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpcore-nio</artifactId>
+        <version>4.0-alpha5</version>
+	  </dependency>
+      <dependency>
+	    <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpcore-niossl</artifactId>
+        <version>4.0-alpha5</version>
+	  </dependency>
+
+      <!-- optional scripting support -->
+      <dependency>
+        <groupId>org.livetribe</groupId>
+        <artifactId>livetribe-jsr223</artifactId>
+        <version>2.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.groovy</groupId>
+        <artifactId>groovy-all</artifactId>
+        <version>1.1-beta-3</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sun.script</groupId>
+        <artifactId>groovy-engine</artifactId>
+        <version>20070112</version>
+      </dependency>
+
+
+      <!-- optional CXF support -->
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-core</artifactId>
+        <version>${cxf-version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>3.8.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.easymock</groupId>
+        <artifactId>easymockclassextension</artifactId>
+        <version>2.2.1</version>
+      </dependency>
+
+
+      <!-- default JPA support -->
+      <dependency>
+        <groupId>org.apache.openjpa</groupId>
+        <artifactId>openjpa-persistence-jdbc</artifactId>
+        <version>${openjpa-version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-entitymanager</artifactId>
+        <version>3.2.1.ga</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate</artifactId>
+        <version>3.2.1.ga</version>
+        <exclusions>
+          <exclusion>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>hsqldb</groupId>
+        <artifactId>hsqldb</artifactId>
+        <version>1.8.0.7</version>
+      </dependency>
+
+
+      <!-- optional JavaMail -->
+      <dependency>
+        <groupId>javax.mail</groupId>
+        <artifactId>mail</artifactId>
+        <version>1.4</version>
+      </dependency>
+
+      <!-- common testing dependencies -->
+      <dependency>
+        <groupId>org.apache.derby</groupId>
+        <artifactId>derby</artifactId>
+        <version>10.1.3.1</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
+
+  <build>
+    <defaultGoal>install</defaultGoal>
+
+    <pluginManagement>
+      <plugins>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>2.0.2</version>
+          <configuration>
+            <source>1.5</source>
+            <target>1.5</target>
+            <maxmem>256M</maxmem>
+            <fork>${compiler.fork}</fork>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-idea-plugin</artifactId>
+          <configuration>
+            <downloadSources>true</downloadSources>
+            <downloadJavadocs>true</downloadJavadocs>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>cobertura-maven-plugin</artifactId>
+          <version>2.0</version>
+          <configuration>
+            <check>
+              <branchRate>85</branchRate>
+              <lineRate>85</lineRate>
+              <haltOnFailure>false</haltOnFailure>
+              <totalBranchRate>85</totalBranchRate>
+              <totalLineRate>85</totalLineRate>
+              <packageLineRate>85</packageLineRate>
+              <packageBranchRate>85</packageBranchRate>
+              <regexes>
+                <regex>
+                  <pattern>org.apache.camel.impl.*</pattern>
+                  <branchRate>90</branchRate>
+                  <lineRate>80</lineRate>
+                </regex>
+                <regex>
+                  <pattern>org.apache.camel.builder.*</pattern>
+                  <branchRate>40</branchRate>
+                  <lineRate>30</lineRate>
+                </regex>
+              </regexes>
+            </check>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>com.sun.tools.jxc.maven2</groupId>
+          <artifactId>maven-jaxb-schemagen-plugin</artifactId>
+          <version>1.3-dev</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-eclipse-plugin</artifactId>
+          <version>2.3</version>
+          <configuration>
+            <outputDirectory>${basedir}/eclipse-classes</outputDirectory>
+
+            <!-- Eclipse update site for the Checkstyle plugin is http://eclipse-cs.sourceforge.net/update -->
+            <!-- Eclipse update site for the PMD plugin is http://pmd.sf.net/eclipse -->
+            <buildcommands>
+              <java.lang.String>org.eclipse.jdt.core.javabuilder</java.lang.String>
+              <java.lang.String>com.atlassw.tools.eclipse.checkstyle.CheckstyleBuilder</java.lang.String>
+              <!-- Lets not enable the PMD buidler just yet..
+              <java.lang.String>net.sourceforge.pmd.runtime.pmdBuilder</java.lang.String>
+              -->
+            </buildcommands>
+            <projectnatures>
+              <nature>org.eclipse.jdt.core.javanature</nature>
+              <nature>com.atlassw.tools.eclipse.checkstyle.CheckstyleNature</nature>
+              <!-- Lets not enable the PMD buidler just yet..
+              <nature>net.sourceforge.pmd.runtime.pmdNature</nature>
+              -->
+            </projectnatures>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.mortbay.jetty</groupId>
+          <artifactId>maven-jetty-plugin</artifactId>
+          <version>${jetty-version}</version>
+        </plugin>
+        
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-release-plugin</artifactId>
+            <configuration>
+                <tagBase>https://svn.apache.org/repos/asf/activemq/camel/tags</tagBase>
+                <useReleaseProfile>false</useReleaseProfile>
+                <preparationGoals>clean install</preparationGoals>
+                <goals>deploy</goals>
+                <arguments>-Prelease,deploy</arguments>
+                <autoVersionSubmodules>true</autoVersionSubmodules>
+            </configuration>
+        </plugin>
+        
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+	  <plugin>
+        <groupId>org.apache.felix</groupId>
+	    <artifactId>maven-bundle-plugin</artifactId>
+	    <version>${felix-version}</version>
+	    <extensions>true</extensions>
+	    <configuration>
+	      <instructions>
+	        <Bundle-Name>${artifactId}</Bundle-Name>
+	        <Bundle-SymbolicName>${camel.osgi.symbolic.name}</Bundle-SymbolicName>
+	        <Export-Package>${camel.osgi.export}</Export-Package>
+	        <Import-Package>${camel.osgi.import}</Import-Package>
+	        <Private-Package>${camel.osgi.private.pkg}</Private-Package>
+	        <Implementation-Title>Apache Camel</Implementation-Title>
+	        <Implementation-Version>${project.version}</Implementation-Version>
+	      </instructions>
+	    </configuration>
+      </plugin>
+	  <!--
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-one-plugin</artifactId>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <goals>
+              <goal>install-maven-one-repository</goal>
+              <goal>deploy-maven-one-repository</goal>
+            </goals>
+            <configuration>
+              <remoteRepositoryId>apache.m1.releases</remoteRepositoryId>
+              <remoteRepositoryUrl>${m1-repo-url}</remoteRepositoryUrl>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      -->
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <!--forkMode>pertest</forkMode--> 
+          <childDelegation>false</childDelegation>
+          <useFile>true</useFile>
+          <includes>
+            <include>**/*Test.*</include>
+          </includes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+      </plugin>
+      <!--
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-jxr-plugin</artifactId>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-pmd-plugin</artifactId>
+            </plugin>
+      -->
+<!--
+      TODO temporarily disabled as maven site is failing
+      
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.0</version>
+      </plugin>
+-->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>taglist-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <links>
+            <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
+            <link>http://java.sun.com/j2ee/1.4/docs/api/</link>
+            <link>http://jakarta.apache.org/commons/collections/apidocs-COLLECTIONS_3_0/</link>
+            <link>http://jakarta.apache.org/commons/dbcp/apidocs/</link>
+            <link>http://jakarta.apache.org/commons/fileupload/apidocs/</link>
+            <link>http://jakarta.apache.org/commons/httpclient/apidocs/</link>
+            <link>http://jakarta.apache.org/commons/logging/apidocs/</link>
+            <link>http://jakarta.apache.org/commons/pool/apidocs/</link>
+            <link>http://junit.sourceforge.net/javadoc/</link>
+            <link>http://logging.apache.org/log4j/docs/api/</link>
+            <link>http://mina.apache.org/report/trunk/apidocs/</link>
+          </links>
+          <stylesheetfile>${basedir}/../../etc/css/stylesheet.css</stylesheetfile>
+          <linksource>true</linksource>
+          <maxmemory>900m</maxmemory>
+          <source>1.5</source>
+
+          <!-- TODO we can't aggregate as it won't find the CSS file :( -->
+          <!--<aggregate>true</aggregate>-->
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
+
+  <profiles>
+    <profile>
+      <id>setup.eclipse</id>
+      <!--
+      <modules>
+          <module>distribution</module>
+          <module>tools/eclipse-plugin</module>
+      </modules>
+      -->
+      <properties>
+        <eclipse.workspace.dir>${basedir}/../workspace</eclipse.workspace.dir>
+      </properties>
+      <build>
+        <defaultGoal>process-test-sources</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-eclipse-plugin</artifactId>
+            <inherited>false</inherited>
+            <executions>
+              <execution>
+                <id>setup.eclipse.workspace</id>
+                <phase>process-test-sources</phase>
+                <goals>
+                  <goal>add-maven-repo</goal>
+                </goals>
+                <configuration>
+                  <workspace>${eclipse.workspace.dir}</workspace>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <inherited>false</inherited>
+            <dependencies>
+              <dependency>
+                <groupId>ant</groupId>
+                <artifactId>ant-nodeps</artifactId>
+                <version>1.6.5</version>
+              </dependency>
+              <dependency>
+                <groupId>ant</groupId>
+                <artifactId>ant-trax</artifactId>
+                <version>1.6.5</version>
+              </dependency>
+            </dependencies>
+            <executions>
+              <execution>
+                <id>setup.workspace</id>
+                <phase>validate</phase>
+                <configuration>
+                  <tasks>
+                    <path id="ecp.ws.path" location="${eclipse.workspace.dir}"/>
+                    <property name="full.eclipse.workspace" refid="ecp.ws.path"/>
+                    <path path="${basedir}/etc" id="etc.path"/>
+
+                    <whichresource resource="/activemq-eclipse-pmd" property="pmd.url">
+                      <classpath refid="etc.path"/>
+                    </whichresource>
+                    <whichresource resource="/activemq-pmd-ruleset.xml" property="pmdruleset.url">
+                      <classpath refid="etc.path"/>
+                    </whichresource>
+                    <whichresource resource="/activemq-eclipse-checkstyle" property="eclipse.checkstyle.url">
+                      <classpath refid="etc.path"/>
+                    </whichresource>
+                    <whichresource resource="/activemq-checkstyle.xml" property="checkstyle.url">
+                      <classpath refid="etc.path"/>
+                    </whichresource>
+                    >
+
+                    <mkdir dir="${full.eclipse.workspace}/.metadata/.plugins/org.eclipse.core.runtime/.settings"/>
+                    <mkdir dir="${full.eclipse.workspace}/.metadata/.plugins/com.atlassw.tools.eclipse.checkstyle"/>
+                    <mkdir dir="${full.eclipse.workspace}/.metadata/.plugins/net.sourceforge.pmd.eclipse"/>
+
+                    <get src="${checkstyle.url}" dest="${full.eclipse.workspace}/activemq-checkstyle.xml"/>
+
+                    <!-- Add checkstyle config -->
+                    <copy file="${basedir}/etc/eclipse/template.checkstyle-config.xml"
+                          tofile="${full.eclipse.workspace}/.metadata/.plugins/com.atlassw.tools.eclipse.checkstyle/checkstyle-config.xml"
+                          overwrite="no">
+                      <filterset>
+                        <filter token="CHECKSTYLE_CONFIG_FILE"
+                                value="${full.eclipse.workspace}/activemq-checkstyle.xml"/>
+                        <filter token="APACHE_HEADER_FILE" value="${full.eclipse.workspace}/activemq-header.txt"/>
+                      </filterset>
+                    </copy>
+
+                    <xslt style="${basedir}/etc/eclipse/addcheckstyle.xsl"
+                          in="${full.eclipse.workspace}/.metadata/.plugins/com.atlassw.tools.eclipse.checkstyle/checkstyle-config.xml"
+                          out="${full.eclipse.workspace}/.metadata/.plugins/com.atlassw.tools.eclipse.checkstyle/checkstyle-config.xml.new">
+                      <param name="checkstyleconfig" expression="${full.eclipse.workspace}/activemq-checkstyle.xml"/>
+                    </xslt>
+                    <copy file="${full.eclipse.workspace}/.metadata/.plugins/com.atlassw.tools.eclipse.checkstyle/checkstyle-config.xml.new"
+                          tofile="${full.eclipse.workspace}/.metadata/.plugins/com.atlassw.tools.eclipse.checkstyle/checkstyle-config.xml"
+                          overwrite="yes"/>
+
+
+                    <!-- Add warning flags that we want -->
+                    <propertyfile
+                            file="${full.eclipse.workspace}/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs">
+                      <entry key="org.eclipse.jdt.core.compiler.problem.missingSerialVersion" value="ignore"/>
+                      <entry key="org.eclipse.jdt.core.compiler.problem.unusedImport" value="ignore"/>
+                      <entry key="org.eclipse.jdt.core.compiler.problem.annotationSuperInterface" value="ignore"/>
+                      <entry key="org.eclipse.jdt.core.compiler.problem.rawTypeReference" value="ignore"/>
+                    </propertyfile>
+
+
+                    <!-- Add code format rules -->
+                    <concat destfile="${full.eclipse.workspace}/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs"
+                            append="true" fixlastline="true">
+                      <filelist dir="${basedir}/etc/eclipse" files="org.eclipse.jdt.core.prefs"/>
+                    </concat>
+                    <loadfile property="eclipse.code.format"
+                              srcFile="${basedir}/etc/eclipse/ActiveMQCodeFormatter.xml"/>
+                    <loadfile property="eclipse.code.templates" srcFile="${basedir}/etc/eclipse/codetemplates.xml"/>
+                    <propertyfile
+                            file="${full.eclipse.workspace}/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.ui.prefs">
+                      <entry key="formatter_profile" value="_ActiveMQ Java Conventions"/>
+                      <entry key="org.eclipse.jdt.ui.formatterprofiles" value="${eclipse.code.format}"/>
+                      <entry key="org.eclipse.jdt.ui.text.custom_code_templates" value="${eclipse.code.templates}"/>
+
+                      <!-- Add import order -->
+                      <entry key="org.eclipse.jdt.ui.importorder" value="java;javax;org.w3c;org.xml;w3c;"/>
+                      <!-- Sort order -->
+                      <entry key="org.eclipse.jdt.ui.visibility.order" value="B,R,D,V,"/>
+                      <entry key="outlinesortoption" value="T,SF,F,SI,I,C,SM,M,"/>
+                      <entry key="org.eclipse.jdt.ui.enable.visibility.order" value="true"/>
+                    </propertyfile>
+                  </tasks>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>rat</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>rat-maven-plugin</artifactId>
+            <version>1.0-alpha-1-SNAPSHOT</version>
+            <executions>
+              <execution>
+                <phase>verify</phase>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <reportFile>${project.build.directory}/${project.build.finalName}.rat</reportFile>
+              <excludes>
+                <exclude>**/target/**/*</exclude>
+
+                <!-- left around after creating the site -->
+                <exclude>**/cobertura.ser</exclude>
+
+                <!-- left around after some unit tests -->
+                <exclude>**/derby.log</exclude>
+                <exclude>**/camel-ftp/res/**/*</exclude>
+
+                <!-- IDEA files -->
+                <exclude>**/*.iml</exclude>
+                <exclude>**/*.ipr</exclude>
+                <exclude>**/*.iws</exclude>
+
+                <!-- Eclipse files -->
+                <exclude>**/.*</exclude>
+                <exclude>**/eclipse-classes/**/*</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <!--
+            TODO this barfs
+
+            <reporting>
+              <plugins>
+                <plugin>
+                  <groupId>org.codehaus.mojo</groupId>
+                  <artifactId>rat-maven-plugin</artifactId>
+                  <version>1.0-alpha-1-SNAPSHOT</version>
+                </plugin>
+              </plugins>
+            </reporting>
+      -->
+      <repositories>
+        <repository>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots/>
+          <id>Codehaus Snapshots</id>
+          <url>http://snapshots.repository.codehaus.org/</url>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots/>
+          <id>Codehaus Snapshots</id>
+          <url>http://snapshots.repository.codehaus.org/</url>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+
+    <profile>
+      <id>integration</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <childDelegation>false</childDelegation>
+              <useFile>true</useFile>
+              <includes>
+                <include>**/*Test.*</include>
+                <include>**/*Integration.*</include>
+              </includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    
+    
+    <profile>
+        <id>release</id>
+        <build>
+            <plugins>
+                <!-- We want to deploy the artifact to a staging location for perusal -->
+                <plugin>
+                    <inherited>true</inherited>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.3</version>
+                    <configuration>
+                        <updateReleaseInfo>true</updateReleaseInfo>
+                    </configuration>
+                </plugin>
+                <!-- We want to sign the artifact, the POM, and all attached artifacts -->
+                <plugin>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>1.0-alpha-3</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+    
+    
+  </profiles>
+</project>

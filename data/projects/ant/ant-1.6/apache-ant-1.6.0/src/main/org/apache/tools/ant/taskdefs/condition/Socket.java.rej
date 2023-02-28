@@ -1,0 +1,34 @@
+***************
+*** 103,112 ****
+          } 
+          log("Checking for listener at " + server + ":" + port, 
+              Project.MSG_VERBOSE); 
+          try { 
+-             new java.net.Socket(server, port); 
+          } catch (IOException e) { 
+              return false; 
+          } 
+          return true; 
+      }
+--- 103,123 ----
+          } 
+          log("Checking for listener at " + server + ":" + port, 
+              Project.MSG_VERBOSE); 
++         java.net.Socket s = null; 
+          try { 
++             s = new java.net.Socket(server, port); 
+          } catch (IOException e) { 
+              return false; 
++         } 
++         finally { 
++           if (s != null){ 
++             try { 
++               s.close(); 
++             } 
++             catch (IOException ioe){ 
++               // Intentionally left blank 
++             } 
++           } 
+          } 
+          return true; 
+      }

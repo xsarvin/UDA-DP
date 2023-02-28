@@ -1,0 +1,232 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 3,2,3,2
+ PRODUCTVERSION 3,2,3,2
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x21L
+#else
+ FILEFLAGS 0x20L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "jeditlauncher installation Module\0"
+            VALUE "FileVersion", "3, 2, 3, 2\0"
+            VALUE "InternalName", "jedinstl\0"
+            VALUE "LegalCopyright", "Copyright 2001 John Gellene\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OLESelfRegister", "\0"
+            VALUE "OriginalFilename", "jedinstl.dll\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "jeditlauncher installation Module\0"
+            VALUE "ProductVersion", "3, 2, 3, 2\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CHOOSE_CTX_DIALOG DIALOG DISCARDABLE  0, 0, 186, 94
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Select primary jEdit version"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,126,68,50,14
+    LISTBOX         IDC_LIST_VERSIONS,29,42,72,40,LBS_SORT |
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Select the version of jEdit that will be activated when you right click on a file or set of files and when you create a scripting object for jEdit.",
+                    IDC_STATIC,10,9,172,27
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE
+BEGIN
+    IDD_CHOOSE_CTX_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_JEDIT_UNINSTALL     ICON    DISCARDABLE     "unlaunch.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_REG_CTX_SERVER_KEY  "CLSID\\{2FA37216-6AFA-4299-9203-8A962384AA7E}\\InprocServer32"
+    IDS_REG_UNINSTALL_KEY   "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\jEdit "
+    IDS_REG_DEFERMOVE_KEY   "SYSTEM\\CurrentControlSet\\Control\\Session Manager"
+    IDS_REG_LAUNCHER_PARAM_KEY "Software\\www.jedit.org\\jEditLauncher"
+    IDS_REG_CTXMENU_KEY     "*\\shellex\\ContextMenuHandlers\\Open with jEdit"
+    IDS_JEDIT_DESC          "jEdit Version %d.%d"
+    IDS_QUERY_REINSTALL     "This version of jEditLauncher is already installed.  If you reinstall the component, any command line parameters for executing jEdit will be replaced by default values. Do you wish to reinstall?"
+    IDS_REG_JAVAPARAM_DEFAULT
+                            "-mx32m -classpath %%CLASSPATH%%;""%s\\jedit.jar"""
+    IDS_QUERY_UNINSTALL     "Do you wish to uninstall jEdit version %s and  remove its installation directory and all of its files?"
+    IDS_SHORTCUT_JEDINIT    "Set command line parameters for jEdit text editor, including parameters for Java interpreter"
+    IDS_SHORTCUT_JEDIT      "Run jEdit, the open source Java text editor"
+    IDS_SHORTCUT_UNINSTALL  "Uninstall jEdit"
+    IDS_QUERY_REBOOT        "The system must be restarted in order to complete installation.  Do you wish to reboot now?"
+    IDS_MSG_INCOMPLETE      "Installation will not be complete until the system is restarted. Please reboot as soon as possible."
+    IDS_QUERY_UNINSTALL_FULL "Do you wish to uninstall jEdit Version %s and remove the installation directory\n%s and all of its files ? If you wish to save any files in this\ndirectory, press ""Cancel"",move the files you wish to save, and run the uninstall program again."
+	IDS_QUERY_UNREGISTER	"Do you wish to uninstall jEdit Version %s? Note that this operation\ndeactivates the current version of jEditLauncher and does not delete any files."
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_JEL_VERSION_01      "{5ead3025-7852-472d-b840-93f61bb53b2b}"
+    IDS_JEL_VERSION_02      "{6f58631e-d9c6-465c-b3a2-603f3f3d918c}"
+/*
+    IDS_JEL_VERSION_03      "{2de9d2c8-d34a-466d-8a80-4b82c97e43f0}"
+    IDS_JEL_VERSION_04      "{2873d89e-6412-4a60-b9ce-3cd834659070}"
+    IDS_JEL_VERSION_05      "{eec83100-ac2d-4a34-9f39-6df147728e9d}"
+    IDS_JEL_VERSION_06      "{451f1291-943e-473d-a011-e8a5eefd4092}"
+    IDS_JEL_VERSION_07      "{5b9a4f50-258f-4f66-983d-b2cd38b1cb8a}"
+    IDS_JEL_VERSION_08      "{29df1c84-5239-46a9-a257-81619d9692d4}"
+    IDS_JEL_VERSION_09      "{292830cf-3969-4316-a21b-2e03f4252c5b}"
+    IDS_JEL_VERSION_10      "{ab014bbb-03ba-4115-ad38-a7970616ffc0}"
+    IDS_JEL_VERSION_11      "{6e53edeb-000e-4c3a-bad7-02ba8eff235c}"
+    IDS_JEL_VERSION_12      "{2e53a4f1-966b-41a5-9f55-f3c44ad10226}"
+    IDS_JEL_VERSION_13      "{759d97b1-9994-4571-bf03-3e62d21e54e7}"
+    IDS_JEL_VERSION_14      "{7a2bddc1-5116-4ed9-9fba-00802e15f5df}"
+    IDS_JEL_VERSION_15      "{2c116e0e-8da5-4f5e-a045-391e14e3268d}"
+    IDS_JEL_VERSION_16      "{af1468b8-457d-44c3-ac68-2b493ccd701c}"
+*/
+END
+
+/*
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_JEL_VERSION_17      "{965cfab5-5045-4cbc-b4fd-653a6e0fd762}"
+    IDS_JEL_VERSION_18      "{db497944-ab72-4e31-aa12-b27a3f1e5dfa}"
+    IDS_JEL_VERSION_19      "{5ac5daeb-2919-4c69-b5f3-f94bd57a791f}"
+    IDS_JEL_VERSION_20      "{69781480-e1a0-4b42-a33f-c5e00cd1df3f}"
+    IDS_JEL_VERSION_21      "{400db48a-c9cc-447d-b6b1-10130c109908}"
+    IDS_JEL_VERSION_22      "{539fb31f-8455-4583-9b10-e339d3db9736}"
+    IDS_JEL_VERSION_23      "{794d084d-83c8-47bf-8a5c-ce4143d1d0bd}"
+    IDS_JEL_VERSION_24      "{fc69c804-e68d-4767-871f-54effe2ac135}"
+    IDS_JEL_VERSION_25      "{8be313d4-8fc0-4ef0-b1ef-af7358fa6e84}"
+    IDS_JEL_VERSION_26      "{3c79d877-f242-43b9-845e-0b43420840cd}"
+    IDS_JEL_VERSION_27      "{c32e45ce-f791-488b-ab5e-e48dfcacedf0}"
+    IDS_JEL_VERSION_28      "{e9fda86c-094d-4d41-8c05-56621cff37a1}"
+    IDS_JEL_VERSION_29      "{b1ab6cb3-0e9a-42a8-80ef-0037fadee447}"
+    IDS_JEL_VERSION_30      "{44c3f586-c986-4bc7-828f-fcddf1264f49}"
+    IDS_JEL_VERSION_31      "{5f4c293c-b4de-495b-9de4-280c59618ff8}"
+    IDS_JEL_VERSION_32      "{e5b13f61-97d8-4e2c-935a-4f17816952be}"
+END
+*/
+
+STRINGTABLE DISCARDABLE
+BEGIN
+	IDS_JEL_VERSIONNAME_01		"3.1final"
+	IDS_JEL_VERSIONNAME_02		"3.2"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

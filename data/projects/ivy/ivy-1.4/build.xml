@@ -1,0 +1,331 @@
+<project name="ivy" default="coverage-report" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
+	<property environment="env"/>
+	<property file="build.properties"/>
+
+    <!-- =================================================================
+               IVY AUTO INSTALL
+               Ivy eats its own dog food, and thus require Ivy jar to
+               be built. This section will download Ivy from
+               internet and use it for ivy tasks of this build.
+         ================================================================= -->
+	<condition property="ivy.home" value="${env.IVY_HOME}">
+		<isset property="env.IVY_HOME" />
+	</condition>
+	<property name="ivy.home" value="${user.home}/.ivy" />
+	<property name="ivy.jar.dir" value="${ivy.home}/jars" />
+	<property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar" />
+	
+	<target name="download-ivy" unless="offline">
+    	<mkdir dir="${ivy.jar.dir}"/>
+		<!-- download Ivy from web site so that it can be used even without any special installation -->
+    	<get src="http://www.jayasoft.org/downloads/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
+    		 dest="${ivy.jar.file}" usetimestamp="true"/>
+	</target>
+	
+	<target name="init-ivy" depends="download-ivy">
+    	<!-- try to load ivy here from local ivy dir, in case the user has not already dropped
+    	      it into ant's lib dir (note that the latter copy will always take precedence).
+    	      We will not fail as long as local lib dir exists (it may be empty) and
+    	      ivy is in at least one of ant's lib dir or the local lib dir. -->
+    	<path id="ivy.lib.path">
+    	    <fileset dir="${ivy.jar.dir}" includes="*.jar"/>
+    	</path>
+    	<taskdef resource="fr/jayasoft/ivy/ant/antlib.xml"
+    	          uri="antlib:fr.jayasoft.ivy.ant" classpathref="ivy.lib.path"/>
+    </target>
+
+	
+	<target name="install" depends="jar" description="build Ivy and install it in Ivy home for consecutive builds">
+		<copy file="${artifacts.build.dir}/ivy.jar" tofile="${ivy.jar.file}"/>
+	</target>
+
+    <!-- =================================================================
+               PREPARATION, CLEANING AND FLAGS TASKS
+         ================================================================= -->
+	<target name="init">
+		<path id="build.classpath">
+			<fileset dir="${lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</path>
+		<path id="run.classpath">
+			<path refid="build.classpath"/>
+			<pathelement location="${classes.build.dir}"/>
+		</path>
+        <path id="test.classpath">
+            <path refid="run.classpath"/>
+			<pathelement path="${test.build.dir}"/>
+        </path>
+	</target>
+	
+	<target name="prepare" depends="init">
+	   <mkdir dir="${classes.build.dir}"/>
+	   <mkdir dir="${test.build.dir}"/>
+	   <mkdir dir="${artifacts.build.dir}"/>
+	   <mkdir dir="${test.report.dir}"/>
+	</target>
+	
+	<target name="clean">
+	   <delete dir="${classes.build.dir}"/>
+	   <delete dir="${test.build.dir}"/>
+	   <delete dir="${artifacts.build.dir}"/>
+	   <delete dir="${test.report.dir}"/>
+	   <delete dir="${javadoc.build.dir}"/>
+	   <delete dir="${doc.build.dir}"/>
+	   <delete dir="${build.dir}"/>
+	</target>
+	
+	<target name="clean-lib">
+    	<delete dir="${lib.dir}"/>
+	</target>
+	
+	<target name="clean-examples" description="clean all examples">
+		<subant target="clean" failonerror="false">
+    		<fileset dir="src/example" includes="**/build.xml"/>
+        </subant>		
+	</target>
+	
+	<target name="clean-all" depends="clean, clean-lib, clean-examples"/>
+	
+	<target name="noresolve" description="use to skip dependency resolution">
+		<property name="no.resolve" value="true"/>
+	</target>
+	
+	<target name="offline" depends="noresolve" description="use to indicate no internet connection is available">
+		<property name="offline" value="true" />
+	</target>
+	
+
+    <!-- =================================================================
+               DEPENDENCY MNGT, COMPILATION AND JAR
+         ================================================================= -->
+	<target name="resolve" depends="init-ivy, prepare" unless="no.resolve">
+		<ivy:retrieve conf="default" />
+	</target>
+
+	<target name="build" depends="resolve">
+		<javac 	srcdir="${src.dir}"
+		        destdir="${classes.build.dir}"
+		        classpathref="build.classpath"
+				source="${ivy.minimum.javaversion}"
+				target="${ivy.minimum.javaversion}"
+		        debug="${debug.mode}"/>
+	</target>
+
+	<target name="jar" depends="build, default-version">
+		<!--  copy resources -->
+		<copy todir="${classes.build.dir}">
+    		<fileset dir="${src.dir}">
+      			<exclude name="**/*.java"/>
+    		</fileset>
+  		</copy>
+  		<!-- identify compiled ivy version -->
+		<echo message="version=${build.version}${line.separator}" file="${classes.build.dir}/module.properties" append="true"/>
+		<echo message="date=${pubdate}${line.separator}" file="${classes.build.dir}/module.properties" append="true"/>
+		
+		<!-- package the two ivy jars -->
+  		<jar 	destfile="${artifacts.build.dir}/ivy.jar"
+				basedir="${classes.build.dir}">
+			<manifest>
+				<attribute name="Build-Version" value="${build.version}"/>
+			</manifest>
+		</jar>
+  		<jar 	destfile="${artifacts.build.dir}/ivy-core.jar"
+				basedir="${classes.build.dir}"
+  				excludes="fr/jayasoft/ivy/ant/*">
+			<manifest>
+				<attribute name="Build-Version" value="${build.version}"/>
+			</manifest>
+		</jar>
+		<!-- clean generated module properties file -->
+		<delete file="${classes.build.dir}/module.properties"/>
+	</target>
+	
+
+    <!-- =================================================================
+               TESTS
+         ================================================================= -->
+	<target name="init-tests-offline" if="offline">
+ 		    <fileset id="test.fileset" dir="${test.dir}">
+ 		    	<include name="**/*Test.java"/>
+ 		    	<contains text="junit"/>
+ 		    	<not><contains text="remote.test"/></not>
+ 		    </fileset>
+	</target>
+		
+	<target name="init-tests-online" unless="offline">
+ 		    <fileset id="test.fileset" dir="${test.dir}">
+ 		    	<include name="**/*Test.java"/>
+ 		    	<contains text="junit"/>
+ 		    </fileset>
+	</target>
+	
+	<target name="init-tests" depends="init-tests-offline, init-tests-online" />
+	
+	<target name="emma" depends="jar">
+		<ivy:cachepath organisation="emma" module="emma" revision="2.0.5312" 
+			           inline="true" conf="ant" pathid="emma.classpath"/> 
+		<taskdef resource="emma_ant.properties" classpathref="emma.classpath" />
+		<property name="emma.enabled" value="true" />
+		<property name="coverage.dir" value="${build.dir}/coverage" />
+		<mkdir dir="${coverage.dir}" />
+	    <emma enabled="${emma.enabled}" >
+	      <instr instrpath="${classes.build.dir}"
+	             mode="overwrite"
+ 	      	     metadatafile="${coverage.dir}/metadata.emma"
+	      />
+	    </emma>
+		<delete file="${coverage.dir}/coverage.emma" />
+		<!-- add emma path to test path, because emma jars need to be available when running 
+		     instrumented classes -->
+		<ivy:addpath topath="test.classpath">
+		  <path refid="emma.classpath"/>
+		</ivy:addpath>
+	</target>
+	
+	<target name="test" depends="jar, init-tests">
+		<javac 	srcdir="${test.dir}"
+		        destdir="${test.build.dir}"
+		        classpathref="run.classpath"
+				source="${ivy.minimum.javaversion}"
+				target="${ivy.minimum.javaversion}"
+		        debug="${debug.mode}"/>
+		<copy todir="${test.build.dir}">
+    		<fileset dir="${test.dir}">
+      			<exclude name="**/*.java"/>
+    		</fileset>
+  		</copy>
+  		<mkdir dir="${test.xml.dir}"  />
+        <junit 
+           haltonfailure="off"
+	       haltonerror="off"
+	       errorproperty="test.failed"
+	       failureproperty="test.failed"
+	       showoutput="no"
+	       printsummary="yes"
+           fork="true">
+        	<classpath>
+        		<path refid="test.classpath"/>
+        	</classpath>
+            <jvmarg value="-Demma.coverage.out.file=${coverage.dir}/coverage.emma" />
+            <jvmarg value="-Demma.coverage.out.merge=true" />
+			<formatter type="xml"/>
+			<batchtest todir="${test.xml.dir}">
+    		    <fileset refid="test.fileset" />
+			</batchtest>
+        </junit>
+	</target>
+
+    <!-- =================================================================
+               REPORTS AND DOCUMENTATION
+         ================================================================= -->
+	<target name="test-report" depends="test">
+		<junitreport todir="${test.xml.dir}">
+			<fileset dir="${test.xml.dir}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${test.report.dir}" />
+		</junitreport>
+		<fail if="test.failed"
+		      message="At least one test has failed. See logs or report"/>
+	</target>
+	
+	<target name="coverage-report" depends="emma, test-report" description="run tests with instrumentation and generate coverage report">
+		<mkdir dir="${doc.build.dir}/coverage" />
+		<emma>
+		    <report sourcepath="${src.dir}" >
+		        <fileset dir="${coverage.dir}" >
+		          <include name="*.emma" />
+		        </fileset>
+
+		        <txt outfile="${doc.build.dir}/coverage/coverage.txt" />
+		        <html outfile="${doc.build.dir}/coverage/coverage.html" />
+		     </report>
+		 </emma>
+	</target>
+	
+	<target name="javadoc">
+		<javadoc destdir="${javadoc.build.dir}">
+			<fileset dir="${src.dir}"/>
+		</javadoc>
+	</target>
+
+	<target name="get-dxml" description="download dxml doc file from web site">
+		<get src="http://www.jayasoft.org/ivy/doc/dxml" dest="${dxml.doc.file}" verbose="true" /> 
+	</target>
+	
+	<target name="get-dxml-raw" description="download raw dxml doc file from web site">
+		<get src="http://www.jayasoft.org/ivy/doc/dxml/raw" dest="${raw.dxml.doc.file}" verbose="true" /> 
+	</target>
+	
+	<target name="main-doc" description="generates doc from dxml file -- WARNING: this operation is very slow and requires ruby 1.8.2 or greater">
+		<echo message="generating documentation"/>
+		<echo message="this operation is very slow... be patient"/>
+		<exec dir="${basedir}" executable="ruby">
+			<arg line="${doc.src.dir}/dxml_to_html.rb"/>
+		</exec>
+	</target>
+	
+    <!-- =================================================================
+               DISTRIBUTION
+         ================================================================= -->
+	<target name="zip-doc" depends="default-version" description="zip the documentation">
+		<zip basedir="${basedir}/doc" destfile="${distrib.dir}/ivy-${build.version}-doc.zip"/>
+	</target>
+
+	<target name="snapshot-src" depends="default-version">
+		<mkdir dir="${distrib.dir}"/>
+		<zip destfile="${distrib.dir}/ivy-${build.version}-src.zip">
+			<zipfileset dir="${src.dir}" prefix="ivy-${build.version}/src/java"/>
+			<zipfileset dir="${basedir}/src/example" prefix="ivy-${build.version}/src/example"/>
+			<zipfileset dir="${test.dir}" prefix="ivy-${build.version}/test/java"/>
+			<zipfileset dir="${basedir}/test/repositories" prefix="ivy-${build.version}/test/repositories"/>
+			<zipfileset dir="${basedir}/test/buildlist" prefix="ivy-${build.version}/test/buildlist"/>
+			<zipfileset dir="${basedir}/test/triggers" prefix="ivy-${build.version}/test/triggers"/>
+			<zipfileset dir="${basedir}/test/xsl" prefix="ivy-${build.version}/test/xsl"/>
+			<zipfileset dir="${src.dir}/fr/jayasoft/ivy/xml" includes="ivy.xsd" fullpath="ivy-${build.version}/ivy.xsd"/>
+			<zipfileset dir="${basedir}" includes="LICENSE.txt" fullpath="ivy-${build.version}/LICENSE.txt"/>
+			<zipfileset dir="${basedir}" includes="CHANGES.txt" fullpath="ivy-${build.version}/CHANGES.txt"/>
+			<zipfileset dir="${basedir}" includes="ivyconf.xml" fullpath="ivy-${build.version}/ivyconf.xml"/>
+			<zipfileset dir="${basedir}" includes="build.properties" fullpath="ivy-${build.version}/build.properties"/>
+			<zipfileset dir="${basedir}" includes="ivy.xml" fullpath="ivy-${build.version}/ivy.xml"/>
+
+			<zipfileset dir="${basedir}" includes="build.xml" fullpath="ivy-${build.version}/build.xml"/>
+		</zip>
+	</target>
+
+	<target name="snapshot-bin" depends="default-version, jar">
+		<mkdir dir="${distrib.dir}"/>
+		<zip destfile="${distrib.dir}/ivy-${build.version}-bin.zip">
+			<zipfileset dir="${basedir}/src/example" prefix="ivy-${build.version}/src/example"/>
+			<zipfileset dir="${basedir}" includes="LICENSE.txt" fullpath="ivy-${build.version}/LICENSE.txt"/>
+			<zipfileset dir="${basedir}" includes="CHANGES.txt" fullpath="ivy-${build.version}/CHANGES.txt"/>
+			<zipfileset dir="${src.dir}/fr/jayasoft/ivy/xml" includes="ivy.xsd" fullpath="ivy-${build.version}/ivy.xsd"/>
+			<zipfileset dir="${basedir}" includes="ivy.xml" fullpath="ivy-${build.version}/ivy.xml"/>
+
+			<zipfileset dir="${lib.dir}" prefix="ivy-${build.version}/lib"/>
+			<zipfileset dir="${artifacts.build.dir}" includes="ivy.jar" fullpath="ivy-${build.version}/ivy-${build.version}.jar"/>
+			<zipfileset dir="${artifacts.build.dir}" includes="ivy-core.jar" fullpath="ivy-${build.version}/ivy-core-${build.version}.jar"/>
+		</zip>
+	</target>
+	
+	<target name="default-version">
+		<tstamp> 
+			<format property="pubdate" pattern="yyyyMMddHHmmss"/>  
+		</tstamp>
+		<property name="version.prefix" value="local-"/>
+		<property name="build.version" value="${version.prefix}${pubdate}"/>
+	</target>
+	
+	<target name="snapshot-version">
+		<property name="version.prefix" value=""/>
+	</target>
+	
+	<target name="release-version">
+		<input message="please enter version: " addproperty="build.version"/>
+	</target>
+	
+	<target name="snapshot" depends="snapshot-version, coverage-report" description="used for nightly and integration builds"/>
+	<target name="release" depends="release-version, coverage-report, snapshot-src, snapshot-bin, main-doc, javadoc, zip-doc" description="make a new release of Ivy"/>
+
+</project>

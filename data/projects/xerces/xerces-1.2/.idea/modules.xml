@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/xerces-1.2.iml" filepath="$PROJECT_DIR$/.idea/xerces-1.2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xerces2-j-Xerces-J_1_2_0/src/xerces2-j-Xerces-J_1_2_0.iml" filepath="$PROJECT_DIR$/xerces2-j-Xerces-J_1_2_0/src/xerces2-j-Xerces-J_1_2_0.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xerces2-j-Xerces-J_1_2_0/xerces2-j-Xerces-J_1_2_01.iml" filepath="$PROJECT_DIR$/xerces2-j-Xerces-J_1_2_0/xerces2-j-Xerces-J_1_2_01.iml" />
+    </modules>
+  </component>
+</project>

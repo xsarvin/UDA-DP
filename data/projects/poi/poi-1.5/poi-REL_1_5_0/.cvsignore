@@ -1,0 +1,8 @@
+*.properties
+dist
+*.el
+*.ipr
+build.number
+log*.*
+*.log
+build

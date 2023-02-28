@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+  
+  http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.apache.camel</groupId>
+    <artifactId>camel-parent</artifactId>
+    <version>1.2.0</version>
+  </parent>
+
+  <artifactId>camel-core</artifactId>
+  <packaging>bundle</packaging>
+  <name>Camel :: Core</name>
+  <description>The Core Camel POJO based router</description>
+
+  <properties>
+	<camel.osgi.export.pkg>org.apache.camel*</camel.osgi.export.pkg>
+	<camel.osgi.import.pkg>*</camel.osgi.import.pkg>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.xml</groupId>
+      <artifactId>jaxb-api</artifactId>
+    </dependency>
+
+    <!-- to allow Spring annotations to be used; could replace with the micro-jar later -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring</artifactId>
+      <optional>true</optional>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- testing -->
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+
+  <build>
+    <plugins>
+      <!-- lets delete the log4j.properties from the test-jar -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>package</id>
+            <phase>package</phase>
+            <configuration>
+              <tasks>
+                <echo>Deleting unwanted resources from the test-jar</echo>
+                <delete file="${project.build.directory}/test-classes/log4j.properties" verbose="true"/>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- generate the attached tests jar -->
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <!-- TODO this doesn't work - if ever we can figure out the maven ninja to get it working, we can zap the Ant stuff above -->
+          <excludes>
+            <exclude>**/*/log4j.properties</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <forkMode>pertest</forkMode>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <links>
+            <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
+            <link>http://java.sun.com/j2ee/1.4/docs/api/</link>
+            <link>http://jakarta.apache.org/commons/logging/apidocs/</link>
+            <link>http://jakarta.apache.org/commons/pool/apidocs/</link>
+            <link>http://junit.sourceforge.net/javadoc/</link>
+            <link>http://logging.apache.org/log4j/docs/api/</link>
+          </links>
+          <stylesheetfile>${basedir}/../etc/css/stylesheet.css</stylesheetfile>
+          <linksource>true</linksource>
+          <maxmemory>256m</maxmemory>
+          <source>1.5</source>
+
+          <groups>
+            <group>
+              <title>Camel API</title>
+              <packages>org.apache.camel</packages>
+            </group>
+            <group>
+              <title>Fluent API (DSL) for building EIP rules</title>
+              <packages>org.apache.camel.builder:org.apache.camel.builder.*</packages>
+            </group>
+            <group>
+              <title>The bean and JAXB2 model for EIP rule definitions</title>
+              <packages>org.apache.camel.model:org.apache.camel.model.*</packages>
+            </group>
+            <group>
+              <title>Strategy APIs for implementors to extend Camel</title>
+              <packages>org.apache.camel.spi</packages>
+            </group>
+            <group>
+              <title>Language APIs and plugins for Expressions and Predicates</title>
+              <packages>org.apache.camel.language:org.apache.camel.language.*</packages>
+            </group>
+            <group>
+              <title>Processors to implement the Enterprise Integration Patterns</title>
+              <packages>org.apache.camel.processor:org.apache.camel.processor.*</packages>
+            </group>
+            <group>
+              <title>Camel Components</title>
+              <packages>org.apache.camel.component.*</packages>
+            </group>
+            <group>
+              <title>Camel Runtime</title>
+              <packages>org.apache.camel.impl:org.apache.camel.impl.*</packages>
+            </group>
+            <group>
+              <title>Type conversion helper classes</title>
+              <packages>org.apache.camel.converter:org.apache.camel.converter.*</packages>
+            </group>
+            <group>
+              <title>Utility classes</title>
+              <packages>org.apache.camel.util:org.apache.camel.util.*:org.apache.camel.view</packages>
+            </group>
+          </groups>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>

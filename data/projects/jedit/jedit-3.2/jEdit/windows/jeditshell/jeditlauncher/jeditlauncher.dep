@@ -1,0 +1,66 @@
+# Microsoft Developer Studio Generated Dependency File, included by jeditlauncher.mak
+
+.\FileList.cpp : \
+	".\FileList.h"\
+	".\jeditlauncher.h"\
+	".\JELauncher.h"\
+	".\ScriptServer.h"\
+	".\ScriptWriter.h"\
+	".\ServConn.h"\
+	"h:\program files\microsoft platform sdk\include\guiddef.h"\
+	
+
+.\jeditlauncher.cpp : \
+	".\jeditlauncher.h"\
+	".\jeditlauncher_i.c"\
+	".\JELauncher.h"\
+	".\ScriptServer.h"\
+	".\ServConn.h"\
+	"h:\program files\microsoft platform sdk\include\guiddef.h"\
+	
+
+.\jeditlauncher.rc : \
+	".\jeditlau.bin"\
+	".\jeditlauncher.rgs"\
+	".\jeditlauncher.tlb"\
+	
+
+.\JELauncher.cpp : \
+	".\FileList.h"\
+	".\jeditlauncher.h"\
+	".\JELauncher.h"\
+	".\ScriptServer.h"\
+	".\ScriptWriter.h"\
+	".\ServConn.h"\
+	"h:\program files\microsoft platform sdk\include\guiddef.h"\
+	
+
+.\ScriptServer.cpp : \
+	".\ScriptServer.h"\
+	".\ServConn.h"\
+	"h:\program files\microsoft platform sdk\include\guiddef.h"\
+	
+
+.\ScriptWriter.cpp : \
+	".\jeditlauncher.h"\
+	".\JELauncher.h"\
+	".\ScriptServer.h"\
+	".\ScriptWriter.h"\
+	".\ServConn.h"\
+	"h:\program files\microsoft platform sdk\include\guiddef.h"\
+	"h:\program files\microsoft platform sdk\include\shldisp.h"\
+	
+
+.\ServConn.cpp : \
+	".\ServConn.h"\
+	"h:\program files\microsoft platform sdk\include\guiddef.h"\
+	
+
+.\StdAfx.cpp : \
+	".\StdAfx.h"\
+	"h:\program files\microsoft platform sdk\include\basetsd.h"\
+	"h:\program files\microsoft platform sdk\include\guiddef.h"\
+	"h:\program files\microsoft platform sdk\include\propidl.h"\
+	"h:\program files\microsoft platform sdk\include\tvout.h"\
+	"h:\program files\microsoft platform sdk\include\winefs.h"\
+	

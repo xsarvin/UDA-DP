@@ -1,0 +1,275 @@
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one
+   or more contributor license agreements.  See the NOTICE file
+   distributed with this work for additional information
+   regarding copyright ownership.  The ASF licenses this file
+   to you under the Apache License, Version 2.0 (the
+   "License"); you may not use this file except in compliance
+   with the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing,
+   software distributed under the License is distributed on an
+   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, either express or implied.  See the License for the
+   specific language governing permissions and limitations
+   under the License.    
+-->
+<project name="IvyRelease" default="snapshot" 
+		xmlns:ivy="antlib:org.apache.ivy.ant"
+		xmlns:xooki="antlib:xooki"
+		xmlns:openpgp="antlib:org.apache.commons.openpgp.ant">
+	<import file="build.xml"/>
+	
+	<target name="generate-doc">
+		<taskdef uri="antlib:xooki" file="${doc.src.dir}/xooki/antlib.xml" />
+
+        <copy todir="${doc.build.dir}">
+	        <fileset dir="${doc.src.dir}" includes="images/**,style/**,samples/**,js/**,ivy.xsd" />
+        </copy>
+		<!-- requires java 6 jdk in path and Apache Ant 1.7 -->
+        <xooki:generate destDir="${doc.build.dir}" checkUpToDate="true">
+			<fileset dir="${doc.src.dir}">
+			    <include name="**/*.html"/>
+			    <exclude name="template.html"/>
+			    <exclude name="*Template.html"/>
+			    <exclude name="conflict-solving-algo.html"/>
+			    <exclude name="use.html"/>
+			    <exclude name="samples/**"/>
+			    <exclude name="js/**"/>
+			    <exclude name="reports/**"/>
+			    <exclude name="xooki/**"/>
+			</fileset>
+		</xooki:generate>
+	</target>
+
+	<target name="all-doc" depends="javadoc, generate-doc" />
+	
+	<target name="init-snapshot" depends="default-version">
+		<property name="snapshot.full.name" value="apache-ivy-${build.version}" />
+	</target>
+
+	<target name="snapshot-metadata" depends="init-snapshot, resolve">
+		<mkdir dir="${artifacts.build.dir}"/>
+		<ivy:deliver 
+			deliverpattern="${artifacts.build.dir}/ivy.xml" 
+			pubrevision="${build.version}" 
+			pubdate="${pubdate}"
+		    status="${status}"/>
+	</target>
+	
+	<target name="snapshot-src" depends="snapshot-metadata,all-doc">
+		<mkdir dir="${distrib.dir}"/>
+		<zip destfile="${distrib.dir}/${snapshot.full.name}-src.zip">
+			<zipfileset dir="${doc.build.dir}" prefix="${snapshot.full.name}/doc" excludes="**/reports/coverage/**,**/reports/test/**"/>
+			<zipfileset dir="${src.dir}" prefix="${snapshot.full.name}/src/java"/>
+			<zipfileset dir="${basedir}/src/example" prefix="${snapshot.full.name}/src/example"/>
+			<zipfileset dir="${basedir}/src/etc" prefix="${snapshot.full.name}/src/etc"/>
+			<zipfileset dir="${test.dir}" prefix="${snapshot.full.name}/test/java"/>
+			<zipfileset dir="${basedir}/test/repositories" prefix="${snapshot.full.name}/test/repositories"/>
+			<zipfileset dir="${basedir}/test/buildlist" prefix="${snapshot.full.name}/test/buildlist"/>
+			<zipfileset dir="${basedir}/test/triggers" prefix="${snapshot.full.name}/test/triggers" excludes="**/cache/**"/>
+			<zipfileset dir="${basedir}/test/xsl" prefix="${snapshot.full.name}/test/xsl"/>
+			<zipfileset dir="${src.dir}/org/apache/ivy/plugins/parser/xml" includes="ivy.xsd" fullpath="${snapshot.full.name}/ivy.xsd"/>
+			<zipfileset dir="${basedir}" includes="META-INF/MANIFEST.MF" fullpath="${snapshot.full.name}/META-INF/MANIFEST.MF"/>
+			<zipfileset dir="${basedir}" includes="NOTICE" fullpath="${snapshot.full.name}/NOTICE"/>
+			<zipfileset dir="${basedir}" includes="README" prefix="${snapshot.full.name}"/>
+			<zipfileset dir="${basedir}" includes="LICENSE*" prefix="${snapshot.full.name}"/>
+			<zipfileset dir="${basedir}" includes="CHANGES.txt" fullpath="${snapshot.full.name}/CHANGES.txt"/>
+			<zipfileset dir="${basedir}" includes="RELEASE_NOTES" fullpath="${snapshot.full.name}/RELEASE_NOTES"/>
+			<zipfileset dir="${basedir}" includes="build.properties" fullpath="${snapshot.full.name}/build.properties"/>
+			<zipfileset dir="${basedir}" includes="ant.patterns" fullpath="${snapshot.full.name}/ant.patterns"/>
+			<zipfileset dir="${basedir}" includes="optional.patterns" fullpath="${snapshot.full.name}/optional.patterns"/>
+			<zipfileset dir="${artifacts.build.dir}" includes="ivy.xml" fullpath="${snapshot.full.name}/ivy.xml"/>
+
+			<zipfileset dir="${basedir}" includes="build.xml" fullpath="${snapshot.full.name}/build.xml"/>
+		</zip>
+		<tar destfile="${distrib.dir}/${snapshot.full.name}-src.tar.gz" 
+			compression="gzip" longfile="gnu">
+			<zipfileset src="${distrib.dir}/${snapshot.full.name}-src.zip"/>
+		</tar>
+	</target>
+	
+	<target name="snapshot-bin-without-dependencies" depends="snapshot-metadata, jar, all-doc">
+		<zip destfile="${distrib.dir}/${snapshot.full.name}-bin.zip">
+			<zipfileset dir="${doc.build.dir}" prefix="${snapshot.full.name}/doc" excludes="**/reports/coverage/**,**/reports/test/**"/>
+			<zipfileset dir="${basedir}/src/example" prefix="${snapshot.full.name}/src/example"/>
+			<zipfileset dir="${basedir}" includes="NOTICE" fullpath="${snapshot.full.name}/NOTICE"/>
+			<zipfileset dir="${basedir}" includes="README" prefix="${snapshot.full.name}"/>
+			<zipfileset dir="${basedir}" includes="LICENSE*" prefix="${snapshot.full.name}"/>
+			<zipfileset dir="${basedir}" includes="CHANGES.txt" fullpath="${snapshot.full.name}/CHANGES.txt"/>
+			<zipfileset dir="${basedir}" includes="RELEASE_NOTES" fullpath="${snapshot.full.name}/RELEASE_NOTES"/>
+			<zipfileset dir="${src.dir}/org/apache/ivy/plugins/parser/xml" includes="ivy.xsd" fullpath="${snapshot.full.name}/ivy.xsd"/>
+			<zipfileset dir="${artifacts.build.dir}" includes="ivy.xml" fullpath="${snapshot.full.name}/ivy.xml"/>
+			<zipfileset dir="${basedir}" includes="build-for-bin-distrib.xml" fullpath="${snapshot.full.name}/build.xml"/>
+
+			<zipfileset dir="${artifacts.build.dir}/jars" includes="${final.name}" fullpath="${snapshot.full.name}/ivy-${build.version}.jar"/>
+		</zip>
+		<tar destfile="${distrib.dir}/${snapshot.full.name}-bin.tar.gz" 
+			compression="gzip" longfile="gnu">
+			<zipfileset src="${distrib.dir}/${snapshot.full.name}-bin.zip"/>
+		</tar>
+	</target>
+
+	<target name="snapshot-bin-with-dependencies" depends="snapshot-metadata, jar, all-doc">
+		<delete dir="${build.dir}/lib" />
+		<ivy:retrieve conf="default" pattern="${build.dir}/lib/[artifact]-[revision].[ext]" />
+		<zip destfile="${distrib.dir}/${snapshot.full.name}-bin-with-deps.zip">
+			<zipfileset dir="${doc.build.dir}" prefix="${snapshot.full.name}/doc" excludes="**/reports/coverage/**,**/reports/test/**"/>
+			<zipfileset dir="${basedir}/src/example" prefix="${snapshot.full.name}/src/example"/>
+			<zipfileset dir="${basedir}" includes="NOTICE" fullpath="${snapshot.full.name}/NOTICE"/>
+			<zipfileset dir="${basedir}" includes="README" prefix="${snapshot.full.name}"/>
+			<zipfileset dir="${basedir}" includes="LICENSE*" prefix="${snapshot.full.name}"/>
+			<zipfileset dir="${basedir}" includes="CHANGES.txt" fullpath="${snapshot.full.name}/CHANGES.txt"/>
+			<zipfileset dir="${basedir}" includes="RELEASE_NOTES" fullpath="${snapshot.full.name}/RELEASE_NOTES"/>
+			<zipfileset dir="${src.dir}/org/apache/ivy/plugins/parser/xml" includes="ivy.xsd" fullpath="${snapshot.full.name}/ivy.xsd"/>
+			<zipfileset dir="${artifacts.build.dir}" includes="ivy.xml" fullpath="${snapshot.full.name}/ivy.xml"/>
+	
+			<zipfileset dir="${artifacts.build.dir}/jars" includes="${final.name}" fullpath="${snapshot.full.name}/ivy-${build.version}.jar"/>
+
+			<zipfileset dir="${build.dir}/lib" prefix="${snapshot.full.name}/lib" excludes="ant-*.jar" />
+		</zip>
+		<tar destfile="${distrib.dir}/${snapshot.full.name}-bin-with-deps.tar.gz" 
+			compression="gzip" longfile="gnu">
+			<zipfileset src="${distrib.dir}/${snapshot.full.name}-bin-with-deps.zip"/>
+		</tar>
+	</target>
+
+	<target name="snapshot-bin" 
+			depends="snapshot-bin-with-dependencies, snapshot-bin-without-dependencies" />
+	
+	<target name="release-xsd" depends="init-snapshot">
+		<!-- copies current ivy xml schema to doc source, so that it will be available from web site -->
+		<copy file="${src.dir}/org/apache/ivy/plugins/parser/xml/ivy.xsd" todir="${doc.src.dir}" />
+	</target>
+	
+
+	<target name="snapshot-maven2" depends="init-snapshot, snapshot-metadata, jar, sources, javadoc">
+		<property name="m2.distrib.dir" value="${distrib.dir}/maven2/${build.version}" />
+		<ivy:makepom ivyfile="${artifacts.build.dir}/ivy.xml" 
+	                 pomfile="${m2.distrib.dir}/ivy-${build.version}.pom"
+                     headerfile="${basedir}/src/etc/license/license-header.xml">
+			<mapping conf="core" scope="compile"/>
+			<mapping conf="test" scope="test"/>
+		</ivy:makepom>
+		<copy file="${artifacts.build.dir}/jars/${final.name}" 
+				tofile="${m2.distrib.dir}/ivy-${build.version}.jar" />
+		<!-- jar javadocs -->
+	    <jar destfile="${m2.distrib.dir}/ivy-${build.version}-javadoc.jar">
+	        <fileset dir="${javadoc.build.dir}" />
+	    </jar>
+		<!-- copy sources jar -->
+		<copy file="${artifacts.build.dir}/sources/${final.name}" 
+				tofile="${m2.distrib.dir}/ivy-${build.version}-sources.jar" />
+
+		<checksum algorithm="md5">
+			<fileset dir="${m2.distrib.dir}">
+				<include name="*.pom"/>
+				<include name="*.jar"/>
+			</fileset>
+		</checksum>
+		<checksum algorithm="sha1">
+			<fileset dir="${m2.distrib.dir}">
+				<include name="*.pom"/>
+				<include name="*.jar"/>
+			</fileset>
+		</checksum>
+	</target>
+	
+
+	<target name="snapshot-checksums">
+		<checksum algorithm="md5">
+			<fileset dir="${distrib.dir}">
+				<include name="*.pom"/>
+				<include name="*.jar"/>
+				<include name="*.zip"/>
+				<include name="*.gz"/>
+			</fileset>
+		</checksum>
+		<checksum algorithm="sha">
+			<fileset dir="${distrib.dir}">
+				<include name="*.pom"/>
+				<include name="*.jar"/>
+				<include name="*.zip"/>
+				<include name="*.gz"/>
+			</fileset>
+		</checksum>
+	</target>
+	
+	<target name="snapshot-version">
+		<property name="version.prefix" value="${target.ivy.version}-dev-"/>
+	</target>
+	
+	<target name="release-version">
+		<property name="build.version" value="${target.ivy.version}" />
+		<echo>Setting version to ${build.version}</echo>
+		<condition property="status" value="release">
+			<matches pattern="^\d+\.\d+\.\d+$" string="${build.version}"/>
+		</condition>
+		<condition property="status" value="milestone">
+			<matches pattern="^\d+\.\d+\.\d+-(alpha|beta|rc)\d+$" string="${build.version}"/>
+		</condition>
+		<property name="status" value="integration" />
+		<echo>Setting status to ${status}</echo>
+	</target>
+	
+	<target name="sign" depends="init-ivy">
+		<ivy:settings id="sign.settingsId" file="ivysettings-signtask.xml" />
+		<ivy:cachepath organisation="org.apache.commons" settingsRef="sign.settingsId" transitive="false" log="download-only"
+				module="commons-openpgp" revision="1.0-SNAPSHOT" inline="true" pathid="openpgp.classpath"/>
+		<ivy:cachepath organisation="bouncycastle" settingsRef="sign.settingsId" log="download-only"
+				module="bcprov-jdk16" revision="140" inline="true" pathid="bouncycastle.bcprov.classpath"/>
+		
+		<!-- Didn't find the jdk1.6 bcpg dependency, using the jdk1.5 version instead -->
+		<ivy:cachepath organisation="bouncycastle" settingsRef="sign.settingsId" transitive="false" log="download-only"
+				module="bcpg-jdk15" revision="140" inline="true" pathid="bouncycastle.bcpg.classpath"/>
+		
+		<property file="${user.home}/ivybuild.properties" />
+		<input message="please enter your PGP password: " addproperty="pgp.password"/>
+		<input message="please enter your PGP keyId: " addproperty="pgp.keyId"/>
+		
+		<!--
+			For some reason, if we use the openpgp:signer task here directly, the bouncycastle security
+			provider cannot be loaded. If we launch it as a forked process everything works fine !?!
+		-->
+		<java classname="org.apache.tools.ant.launch.Launcher"
+				fork="true">
+			<classpath>
+				<fileset dir="${ant.home}" includes="**/*.jar" />
+				<path refid="bouncycastle.bcprov.classpath" />
+				<path refid="bouncycastle.bcpg.classpath" />
+				<path refid="openpgp.classpath" />
+			</classpath>
+			<arg line="-f build-release.xml" />
+			<arg line="sign-internal" />
+			<arg line="-Dpgp.password=${pgp.password}" />
+			<arg line="-Dpgp.keyId=${pgp.keyId}" />
+		</java>
+	</target>
+		
+	<target name="sign-internal">
+		<property file="build.properties" />
+		<taskdef resource="org/apache/commons/openpgp/ant/antlib.xml" uri="antlib:org.apache.commons.openpgp.ant" />
+		<openpgp:signer secring="${user.home}/.gnupg/secring.gpg"
+						pubring="${user.home}/.gnupg/pubring.gpg"
+						password="${pgp.password}" 
+						keyid="${pgp.keyId}"
+						asciiarmor="true">
+			<fileset dir="${distrib.dir}">
+				<include name="**/*.pom"/>
+				<include name="**/*.jar"/>
+				<include name="**/*.zip"/>
+				<include name="**/*.gz"/>
+			</fileset>
+		</openpgp:signer>
+	</target>
+	
+	<target name="prepare-snapshot" 
+	        depends="/localivy, clean-ivy-home, clean, clean-lib, snapshot-version, install, clean-examples, coverage-report" />
+	<target name="snapshot" 
+			depends="prepare-snapshot, snapshot-src, snapshot-bin, snapshot-maven2, snapshot-checksums" 
+			description="used for nightly and integration builds"/>
+	<target name="release" depends="release-version, snapshot" description="make a new release of Ivy"/>
+
+</project>

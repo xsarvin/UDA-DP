@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="cgu@apache.org">Ceki Gulcu</author>
+    <title>log4j project</title>
+  </properties>
+
+<body>
+
+
+<!--
+<table CELLSPACING="8" CELLPADDING="4" FGCOLOR="gray"
+  BORDER="0" WIDTH="25%" ALIGN="RIGHT" VALIGN="TOP">
+ <tr> 
+   <td valign="center" BGCOLOR="#FFFFCF" ALIGN="center">
+   <b><font color="CC0000">This is your last chance to bail out!</font></b>
+   </td>
+  </tr>
+  <tr>
+     <td>
+     <font color="666666">
+       There is <a href="praise.html">mounting evidence</a> showing that
+       log4j is highly addictive. In clinical tests, starving programmers
+       have consistently preferred logging to pizza. 
+       <p> Are you absolutely sure you want to use log4j? Because once
+       hooked, there is no turning back.</p>
+     </font>
+     </td>
+ </tr>
+</table>
+-->
+
+
+<section name="log4j version 1.1">
+
+<p>Downlaod version 1.1 including <i>full source code</i>, class files
+and documentation in
+<a href="../jakarta-log4j-1.1.tar.gz"><b>TAR.GZ</b></a> format or in
+<a href="../jakarta-log4j-1.1.zip"><b>ZIP</b></a> format. You may
+elect to browse log4j <a
+href="documentation.html"><b>documentation</b></a> online. 
+</p>
+
+<p><a
+href="http://www.javaworld.com/javaworld/jw-05-2001/jw-0504-finalists.html"><img
+src="images/ecaward_finalist_logo.gif" align="right"
+border="0"/></a>Version 1.1 is the 21st major public release of
+log4j. It is 100% backward compatible with log4j version 1.0.x.</p>
+
+<p>We also maintain a list of <a href="earlier.html">earlier
+versions</a> of log4j for download, intended for the curious
+paleontologist.</p>
+
+<p>Thanks to <a href="mailto:hgomez@slib.fr">Henri Gomez</a>, Linux
+users can now fetch log4j in RPM format at <a
+href="http://rpmized.free.fr">http://rpmized.free.fr</a> or
+alternatively at <a
+href="ftp://ftp.falsehope.com/home/gomez/log4j/">ftp://ftp.falsehope.com/home/gomez/log4j/</a>.</p>
+
+
+</section>
+
+<section name="Third-party software">
+
+<dl>
+  <dt><a href="http://log4p.sourceforge.net"><b>log4p</b></a></dt>
+  <dd>A Python translation of log4j by Igor Poteryaev.</dd>
+
+
+  <dt><a href="http://www.japhy.de/configLog4j"><b>configLog4j</b></a></dt>
+  <dd>A visual log4j configuration file editor by Tobias Dezulian.</dd>
+
+
+  <dt><a href="http://sourceforge.net/projects/log4cpp/"><b>log4cpp</b></a></dt>
+  <dd>A library of C++ classes for flexible logging to files, syslog, IDSA and 
+      other destinations modeled after log4j by Bastiaan Bakker.</dd>
+
+  <dt><a href="http://developer.jini.org/exchange/projects/log"><b>JINI logging service</b></a></dt>
+  <dd>A log4j wrapper for JINI Jerome Bernard.</dd>
+
+
+  <dt><a href="http://support.klopotek.de/log4j/jdbc/index.html"><b>JDBCAppender</b></a></dt>
+  <dd>A JDBCAppender by <a href="mailto:t.fenner@klopotek.de">Thomas Fenner</a>.</dd>
+
+  <dt><a href="http://www.epesh.com/logtags.jsp"><b>The Log Tag Library</b></a></dt>
+  <dd>A tag library designed to give JSP tag-level access to log4j.</dd>
+</dl>
+
+<p>If you would like your software to be listed here, then send a note
+to the <a
+href="mailto:log4j-user@jakarta.apache.org">log4j-user@jakarta.apache.org</a>
+list.</p>
+
+
+</section>
+
+</body>
+</document>
